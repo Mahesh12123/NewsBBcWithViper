@@ -17,6 +17,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+
+        let datamager:DataApiProtocal = DataSourceController()
+        let interractor:InteractorProtocal = InteractorController(datamager1: datamager) 
+        let router:RouterProtocal = RouterViewController()
+        var presenter:PresentProtocal = PresenterController(interactor1: interractor, wirefram: router)
+        let newsview:NewsViewProtocal = NewsViewController(presenter: presenter)
+       
+        presenter.view = newsview
+        interractor.presenter = presenter
+        datamager.interacrotor = interractor
+
+        self.window?.rootViewController = UINavigationController(rootViewController: newsview as! UIViewController)
+        self.window?.frame = UIScreen.main.bounds
+        self.window?.makeKeyAndVisible()
+
         return true
     }
 

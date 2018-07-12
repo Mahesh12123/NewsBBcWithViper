@@ -8,28 +8,101 @@
 
 import UIKit
 
-class NewsViewController: UIViewController {
+protocol NewsViewProtocal:class {
+    
+    func dataget(newsdata:[[String:Any]])
+    func showerror(error:String)
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+class NewsViewController: UIViewController ,UITableViewDataSource ,UITableViewDelegate  , NewsViewProtocal
+{
+    
+    var presenter :PresentProtocal
+    
+    let tableview:UITableView
+    
+    init(presenter:PresentProtocal)
+    {
+        
+        self.presenter = presenter
+        tableview = UITableView()
+        tableview.translatesAutoresizingMaskIntoConstraints = false
+        super.init(nibName:nil , bundle:nil)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    required init?(coder aDecoder: NSCoder) {
+        
+        fatalError("init(coder:) has not been implemented")
+        
     }
-    */
-
+    
+    
+    var news:[[String:Any]] = [[String:Any]]()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableview.delegate = self
+        tableview.dataSource = self
+        self.view.addSubview(tableview)
+        self.tableview.register(CustomTableViewCell.classForCoder(), forCellReuseIdentifier: "cell")
+        self.presenter.fetchnewdata()
+        
+        let views = ["tableview":tableview]
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|[tableview]|", options: [], metrics: nil, views: views))
+        self.view.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|[tableview]|", options: [], metrics: nil, views: views))
+        
+        
+    }
+    
+    
+    func dataget(newsdata: [[String:Any]]) {
+        
+        self.news = newsdata
+        self.tableview.reloadData()
+        
+    }
+    
+    func showerror(error: String) {
+        
+        self.presenter.fetcherror(error: error)
+        
+        
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return news.count
+        
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        let cell = tableview.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as! CustomTableViewCell
+        
+        if self.news.count > 0 {
+            
+            let eachnews = self.news[indexPath.row]
+            
+            cell.titlelabel.text = (eachnews["title"] as? String ) ?? ""
+            
+            cell.describelabel.text = (eachnews["description"] as? String) ?? ""
+            cell.showurl.text = (eachnews["url"] as? String) ?? ""
+          
+         
+        }
+        
+        return cell
+        
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 180.0
+        
+        
+    }
+    
+    
+    
 }

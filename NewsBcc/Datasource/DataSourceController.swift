@@ -7,29 +7,47 @@
 //
 
 import UIKit
+import Alamofire
 
-class DataSourceController: UIViewController {
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+protocol DataApiProtocal:class {
+    var interacrotor :InteractorProtocal?{get set}
+    func NewsFetchBcc()
+    
+    
+}
 
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+class DataSourceController: DataApiProtocal{
+    
+    var interacrotor: InteractorProtocal?
+    
+    func NewsFetchBcc() {
+        
+        Alamofire.request(Urllink.url).responseJSON { (responce) in
+            
+            if let responcevalue = responce.result.value as! [String:Any]? {
+                
+                if let responcenews = responcevalue["articles"] as! [[String:Any]]?
+                {
+                    let when = DispatchTime.now()
+                    DispatchQueue.main.asyncAfter(deadline: when) {
+                        
+                        self.interacrotor?.newsfetchfromdatamanger(News: responcenews)
+                        
+                    }
+                    
+                }
+                    
+                else {
+                    self.interacrotor?.errorfetchfrmdatamager(error: "Error Fetch News From Api")
+                    
+                }
+                
+            }
+            
+        }
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    
 }

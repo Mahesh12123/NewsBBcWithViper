@@ -8,28 +8,47 @@
 
 import UIKit
 
-class InteractorController: UIViewController {
+protocol InteractorProtocal:class {
+    var presenter:PresentProtocal?{get set}
+    
+    func newsfetchfromdatamanger(News:[[String:Any]])
+    func fetchdatafromapi()
+    func errorfetchfrmdatamager(error:String)
+    
+}
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+class InteractorController: InteractorProtocal   {
+    
+    
+    var presenter: PresentProtocal?
+    var datamaneger:DataApiProtocal?
+    
+    init(datamager1:DataApiProtocal) {
+        self.datamaneger = datamager1
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    func fetchdatafromapi() {
+        let when = DispatchTime.now() + 0.5
+        DispatchQueue.main.asyncAfter(deadline: when) {
+            self.datamaneger?.NewsFetchBcc()
+        }
+        
     }
-    */
-
+    
+    
+    func newsfetchfromdatamanger(News: [[String:Any]]) {
+        
+        self.presenter?.bccnewsfetch(news: News)
+        
+    }
+    
+    func errorfetchfrmdatamager(error: String) {
+        
+        self.errorfetchfrmdatamager(error: error)
+        
+    }
+    
+    
+    
 }

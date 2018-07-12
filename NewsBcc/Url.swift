@@ -7,3 +7,7 @@
 //
 
 import Foundation
+
+class Urllink {
+    public static   let url = "https://newsapi.org/v2/everything?sources=bbc-news&apiKey=356240079f6c4b7e8a1ca4bc3800ec05"
+}

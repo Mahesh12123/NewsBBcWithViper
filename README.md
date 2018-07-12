@@ -1,1 +1,1 @@
-This my newsApp for IOS 11.4 with Alamofire
+This is my newsApp for IOS 11.4 with Alamofire

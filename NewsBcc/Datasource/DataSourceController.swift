@@ -32,7 +32,7 @@ class DataSourceController: DataApiProtocal{
                     let when = DispatchTime.now()
                     DispatchQueue.main.asyncAfter(deadline: when) {
                         
-                        self.interacrotor?.newsfetchfromdatamanger(News: responcenews)
+                       self.interacrotor?.newsfetchfromdatamanger(News: responcenews)
                         
                     }
                     

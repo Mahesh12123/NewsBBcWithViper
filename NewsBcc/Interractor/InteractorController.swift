@@ -45,7 +45,7 @@ class InteractorController: InteractorProtocal   {
     
     func errorfetchfrmdatamager(error: String) {
         
-        self.errorfetchfrmdatamager(error: error)
+        self.presenter?.fetcherror(error: error)
         
     }
     

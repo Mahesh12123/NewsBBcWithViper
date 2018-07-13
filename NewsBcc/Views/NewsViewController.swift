@@ -64,8 +64,10 @@ class NewsViewController: UIViewController ,UITableViewDataSource ,UITableViewDe
     }
     
     func showerror(error: String) {
+        let alert = UIAlertController(title: "Alert", message: error, preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "Okay", style: UIAlertActionStyle.default, handler: nil))
+        self.present(alert, animated: true, completion: nil)
         
-        self.presenter.fetcherror(error: error)
         
         
     }
@@ -85,7 +87,6 @@ class NewsViewController: UIViewController ,UITableViewDataSource ,UITableViewDe
             let eachnews = self.news[indexPath.row]
             
             cell.titlelabel.text = (eachnews["title"] as? String ) ?? ""
-            
             cell.describelabel.text = (eachnews["description"] as? String) ?? ""
             cell.showurl.text = (eachnews["url"] as? String) ?? ""
           
